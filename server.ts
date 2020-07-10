@@ -11,7 +11,7 @@ let sourceInfo : contentLoader.sources = {
 				,"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
 				,"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"
 				]
-	,templates :  [{original:"",modificationScript:""}]
+	,templates :  []
 	,body : ""
 	,postProcess : []
 };

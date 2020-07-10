@@ -4,16 +4,10 @@ function includeScript(response : express.Response, scriptURL : string)
 	response.write("<script type='text/javascript' src='"+scriptURL+"'></script>\n"); 
 }
 
-export interface templateDefinition
-{
-	original: string;
-	modificationScript : string;
-}
-
 export interface sources
 {
 	scripts : Array<string>;
-	templates :  Array<templateDefinition> ;
+	templates :  Array<string> ;
 	body : string;
 	postProcess : Array<string>;
 }
@@ -25,13 +19,11 @@ export class contentLoader
 	constructor (sourceInfo : sources)
 	{
 		this.sourceInfo = sourceInfo;
-		this.templateList = new Array<string>;
+		this.templateList = new Array<string>();
 	}
 	
-	protected processTemplate(template : templateDefinition)
+	protected processTemplate(template : string)
 	{
-		import mod from template.modificationScript;
-		mod.process(template.original);
 		
 	}
 	public generateStaticHTML(response : express.Response)
