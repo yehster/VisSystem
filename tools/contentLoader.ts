@@ -1,7 +1,9 @@
 import express from "express";
 function includeScript(response : express.Response, scriptURL : string)
 {
-	response.write("<script type='text/javascript' src='"+scriptURL+"'></script>\n"); 
+	let marker = scriptURL.indexOf("?");
+	let href : string = marker > 0 ? scriptURL.replace("?","?version="+(new Date()).valueOf()) : scriptURL;
+	response.write("<script type='text/javascript' src='"+href+"'></script>\n"); 
 }
 
 export interface sources
