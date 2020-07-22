@@ -27,19 +27,25 @@ app.use(express.json());
 
 async function serveTemplate(req: express.Request, res : express.Response)
 {
+	// update cache headers here?
+	//res.set({'cache-control':'public,max-age=3600'});
 	let templateName = req.params['template'];
 	let directory = req.params['directory'];
 	let fullPath : string;
+	let templateId : string = "";
 	if(directory)
 	{
 		fullPath = "templates" +"/" + directory + "/" +templateName;
+		templateId= "dir-"+directory+"-"
 	}
 	else
 	{
 		fullPath = "templates" + "/" + templateName;
 	}
+	templateId = templateId+templateName.substring(0,templateName.lastIndexOf(".htm"));
+	res.write("<script type='text/html' id=''"+templateId+"'>'")
 	await streamToResponse(fullPath,res);
-
+	res.write("</script>");
 	res.status(200).send();	
 }
 app.all("/templates/:template",serveTemplate);
@@ -57,15 +63,15 @@ function streamToResponse(filename : string ,res : express.Response)
 async function serveTemplateLoader(req: express.Request, res : express.Response)
 {
 	res.set({"content-type":"application/javascript; charset=utf-8"});
-	await streamToResponse("templateLoader/templateLoader.js",res);
+	await streamToResponse("templateLoader/templateJSLoader.js",res);
 	res.status(200).send();
 }
 app.all("/script/templateLoader.js",serveTemplateLoader);
-function mainContent(req: express.Request,res : express.Response)
+async function mainContent(req: express.Request,res : express.Response)
 {
 	res.set({'Content-Type': 'text/html'});
 	res.write("<body>");
-	myLoader.generateStaticHTML(res);
+	await myLoader.generateStaticContent(res);
 	res.write("Hello world!");
 	res.write("</body>");
 
